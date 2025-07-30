@@ -304,7 +304,7 @@ class GUI:
 def main():
     root = tk.Tk()
     logger.setLevel(level=logging.DEBUG)
-    app = GUI(root, version='V20250708')
+    app = GUI(root, version='V20250723')
     root.mainloop()
 
 

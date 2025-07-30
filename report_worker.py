@@ -104,6 +104,12 @@ TASK_FINISH = "##任务完成##"
 # error Code
 CRITICAL_ERROR = 'critical'
 
+# 程序的执行目录
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    EXE_DIR = sys._MEIPASS
+else:
+    EXE_DIR = Path.cwd()
+
 # Word 中的换行符: \a   换页符：\f
 # Report类继承自Thread对象，方便主模块将此作为线程使用
 class Report(threading.Thread):
@@ -140,25 +146,12 @@ class Report(threading.Thread):
         self.task_type = task_type
         self.is_report = True
         self.is_revision_mode = is_revision_mode
-        # 程序的执行目录
-        if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-            # log_show('running in a PyInstaller bundle')
-            self.exe_dir = sys._MEIPASS
-        else:
-            # log_show('running in a normal Python process')
-            self.exe_dir = Path.cwd()
-
-        # 根据输入的参数准备其他要用到的变量：
-        self.xlsm_dir = self.xlsm_file.parent
-        if self.is_report:
-            tpl_path = str(Path(self.exe_dir, r'templates', 'TestReport.docx'))
-        else:
-            tpl_path = str(Path(self.exe_dir, r'templates', 'TestRecord.docx'))
-        self.tpl = DocxTemplate(tpl_path)
-        self.template_dir = Path(tpl_path).parent
-        self.workbook = xl.load_workbook(self.xlsm_file)
 
         # 其他暂时还无法赋值的参数：
+        self.xlsm_dir = ''
+        self.tpl = None
+        self.template_dir = ''
+        self.workbook = None
         self.context = {}
         self.output_name = None  # PATH类型
         self.output_dir = None  # PATH类型
@@ -205,8 +198,19 @@ class Report(threading.Thread):
     # 将所有任务串联起来，生成最终的报告或记录：
     ####################################################
     def generate_report(self):
+        # 根据输入的参数准备其他要用到的变量：
+        if self.is_report:
+            tpl_path = str(Path(EXE_DIR, r'templates', 'TestReport.docx'))
+            name = "检验报告"
+        else:
+            tpl_path = str(Path(EXE_DIR, r'templates', 'TestRecord.docx'))
+            name = "原始记录"
+        self.xlsm_dir = self.xlsm_file.parent
+        self.tpl = DocxTemplate(tpl_path)
+        self.template_dir = Path(tpl_path).parent
+        self.workbook = xl.load_workbook(self.xlsm_file)
+
         # 参数都已准备好，开始生成报告：
-        name = "检验报告" if self.is_report else "原始记录"
         log_show.info('*' * 60)
         log_show.info(f"开始生成{name}")
         log_show.info('*' * 60)
