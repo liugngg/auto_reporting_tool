@@ -123,10 +123,11 @@ class GUI:
             text="打开记录",
             command=self.on_get,
             bg="#4f7fDD",
-            fg="white",
+            fg="yellow",
             relief=tk.RAISED,
             borderwidth=2,
             width=12,
+            font=("微软雅黑", 8, "bold"),
             # activebackground="orange"
         )
         browse_btn.pack(side=tk.RIGHT)
@@ -156,11 +157,12 @@ class GUI:
             command=self.on_generate,
             state="disabled",
             bg="#4f7fDD",
-            fg="white",
+            fg="yellow",
             relief=tk.RAISED,
             borderwidth=2,
             width=12,
-            disabledforeground="darkgray"
+            disabledforeground="darkgray",
+            font=("微软雅黑", 8, "bold")
         )
         self.generate_btn.pack(side=tk.RIGHT, anchor=tk.E)
         clear_log_btn = tk.Button(
@@ -168,10 +170,11 @@ class GUI:
             text="清空日志",
             command=self.on_clear,
             bg="#4f7fDD",
-            fg="white",
+            fg="yellow",
             relief=tk.RAISED,
             borderwidth=2,
-            width=12
+            width=12,
+            font=("微软雅黑", 8, "bold")
         )
         clear_log_btn.pack(side=tk.RIGHT, padx=10)
 

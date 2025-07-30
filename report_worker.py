@@ -209,6 +209,9 @@ class Report(threading.Thread):
         self.tpl = DocxTemplate(tpl_path)
         self.template_dir = Path(tpl_path).parent
         self.workbook = xl.load_workbook(self.xlsm_file)
+        # 连续生成报告和记录时，防止重复生成结果内容：
+        self.context = {}
+        self.test_items = []
 
         # 参数都已准备好，开始生成报告：
         log_show.info('*' * 60)
