@@ -1,4 +1,5 @@
 import os
+import sys
 import tkinter as tk
 from tkinter import ttk, filedialog, scrolledtext, messagebox
 from pathlib import Path
@@ -9,6 +10,12 @@ from report_worker import Report, TASK_FINISH, CRITICAL_ERROR
 
 # 全局变量，控制日志写入的到滚动文本框中：
 logger = logging.getLogger("report")
+
+# 程序的执行目录
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    EXE_DIR = sys._MEIPASS
+else:
+    EXE_DIR = Path.cwd()
 
 
 class QueueHandler(logging.Handler):
@@ -32,8 +39,8 @@ class GUI:
         self.version = version
 
         # 初始化图像，此变量需要与 root.mainloop 同级别
-        my_pic = r'potin.png'
-        self.logo = ImageTk.PhotoImage(Image.open(my_pic).resize((190, 20), Image.LANCZOS))
+        potin_pic = str(Path(EXE_DIR, r'templates', 'potin.png'))
+        self.logo = ImageTk.PhotoImage(Image.open(potin_pic).resize((190, 20), Image.LANCZOS))
 
         # 原始记录xlsm文件路径
         self.xlsm_file = tk.StringVar()
@@ -86,7 +93,8 @@ class GUI:
         self.root.resizable(False, False)
 
         # 更换窗口的小图标：
-        self.root.iconbitmap("myApp.ico")
+        app_pic = str(Path(EXE_DIR, r'templates', 'app.ico'))
+        self.root.iconbitmap(app_pic)
 
         # 主框架
         main_frame = ttk.Frame(self.root, padding="5")

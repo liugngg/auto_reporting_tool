@@ -21,10 +21,10 @@
 打包命令:
 ```cmd
 
-pyinstaller --icon=auto.ico --add-data "templates;./templates" --add-data "potin.png;."  --add-data "auto.ico;." --clean -w -D report_gui_liug.py --noconfirm -n 报告自动化生成工具软件
+pyinstaller --icon="templates/app.ico"  --add-data "templates;./templates" --clean -w -D main_gui.py --noconfirm -n 报告自动化生成工具
 
 mkdir release
-"C:\Program Files\7-Zip\7z.exe" a -tzip .\release\release.zip .\dist\报告自动化生成工具软件\*
+"C:\Program Files\7-Zip\7z.exe" a -tzip .\release\release.zip .\dist\报告自动化生成工具\*
 
 ```
 
